@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "591807715325",
+    "project_id": "safra-facil-c865c",
+    "storage_bucket": "safra-facil-c865c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591807715325:android:c9c0429e326371e466eb94",
+        "android_client_info": {
+          "package_name": "com.example.safra_facil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591807715325-kufh7c27fjru0ajia44k5vgf2ai1hm5s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt1UoFBP0pefPJysyLgMCeWuoS3G0SRR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591807715325-kufh7c27fjru0ajia44k5vgf2ai1hm5s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
