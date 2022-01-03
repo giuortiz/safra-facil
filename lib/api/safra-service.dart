@@ -10,214 +10,262 @@ class SafraService implements ISafraService {
   @override
   Future<void> buscarSolicitacoes() async {
     try {
-      /*   var response = await Firestore.instance
+/*      var response = await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Acelga")
-          .setData({"nome": "Acelga", "id": Uuid().v1()});
+          .document("Abacate")
+          .setData({"nome": "Abacate", "id": Uuid().v1()});*/
+/*      await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Abacaxi Haway")
+          .setData({"nome": "Abacaxi Haway", "id": Uuid().v1()});*/
+    /*  await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Abacaxi Perola")
+          .setData({"nome": "Abacaxi Perola", "id": Uuid().v1()});*/
       await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Agrião")
-          .setData({"nome": "Agrião", "id": Uuid().v1()});*/
+          .document("Ameixa")
+          .setData({"nome": "Ameixa", "id": Uuid().v1()});
+/*      await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Banana Nanica")
+          .setData({"nome": "Banana Nanica", "id": Uuid().v1()});*/
+  /*    await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Banana Maça")
+          .setData({"nome": "Banana Maça", "id": Uuid().v1()});*/
+ /*     await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Banana Prata")
+          .setData({"nome": "Banana Prata", "id": Uuid().v1()});*/
+/*      await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Cajú")
+          .setData({"nome": "Cajú", "id": Uuid().v1()});*/
+  /*    await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Caqui")
+          .setData({"nome": "Caqui", "id": Uuid().v1()});*/
+/*      await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Coco Seco")
+          .setData({"nome": "Coco Seco", "id": Uuid().v1()});*/
+    /*  await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Figo")
+          .setData({"nome": "Figo", "id": Uuid().v1()});*/
+   /*   await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Fruta do Conde")
+          .setData({"nome": "Fruta do Conde", "id": Uuid().v1()});*/
       await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Alface")
-          .setData({"nome": "Alface", "id": Uuid().v1()});
+          .document("Goiaba")
+          .setData({"nome": "Goiaba", "id": Uuid().v1()});
+/*      await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Jabuticaba")
+          .setData({"nome": "Jabuticaba", "id": Uuid().v1()});*/
+ /*     await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Laranja")
+          .setData({"nome": "Laranja", "id": Uuid().v1()});*/
+/*      await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Limão")
+          .setData({"nome": "Limão", "id": Uuid().v1()});*/
       await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Alho Porró")
-          .setData({"nome": "Alho Porró", "id": Uuid().v1()});
+          .document("Mamão")
+          .setData({"nome": "Mamão", "id": Uuid().v1()});
+  /*    await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Mamão Haway")
+          .setData({"nome": "Mamão Haway", "id": Uuid().v1()});*/
       await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Almeirão")
-          .setData({"nome": "Almeirão", "id": Uuid().v1()});
+          .document("Manga")
+          .setData({"nome": "Manga", "id": Uuid().v1()});
+  /*    await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Maracuja Azedo")
+          .setData({"nome": "Maracuja Azedo", "id": Uuid().v1()});*/
+ /*     await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Maracuja Doce")
+          .setData({"nome": "Maracuja Doce", "id": Uuid().v1()});*/
       await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Aspargo")
-          .setData({"nome": "Aspargo", "id": Uuid().v1()});
-      /*   await Firestore.instance
+          .document("Melancia")
+          .setData({"nome": "Melancia", "id": Uuid().v1()});
+     /* await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Brócolis")
-          .setData({"nome": "Brócolis", "id": Uuid().v1()});*/
+          .document("Melão")
+          .setData({"nome": "Melão", "id": Uuid().v1()});*/
+/*      await Firestore.instance
+          .collection("Tipo")
+          .document("Frutas")
+          .collection("Mes")
+          .document("Dezembro")
+          .collection("Alimentos")
+          .document("Morango")
+          .setData({"nome": "Morango", "id": Uuid().v1()});*/
       await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Catalonha")
-          .setData({"nome": "Catalonha", "id": Uuid().v1()});
+          .document("Nectarina")
+          .setData({"nome": "Nectarina", "id": Uuid().v1()});
       await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Cebolinha")
-          .setData({"nome": "Cebolinha", "id": Uuid().v1()});
+          .document("Nêspera")
+          .setData({"nome": "Nêspera", "id": Uuid().v1()});
       await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Chicória")
-          .setData({"nome": "Chicória", "id": Uuid().v1()});
-      /* await Firestore.instance
+          .document("Pêssego")
+          .setData({"nome": "Pêssego", "id": Uuid().v1()});
+/*      await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Coentro")
-          .setData({"nome": "Coentro", "id": Uuid().v1()});*/
-      await Firestore.instance
+          .document("Tangerina Cravo")
+          .setData({"nome": "Tangerina Cravo", "id": Uuid().v1()});*/
+ /*     await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Couve")
-          .setData({"nome": "Couve", "id": Uuid().v1()});
-      /*  await Firestore.instance
+          .document("Tangerina Murgot")
+          .setData({"nome": "Tangerina Murgot", "id": Uuid().v1()});*/
+/*      await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Couve Flor")
-          .setData({"nome": "Couve Flor", "id": Uuid().v1()});*/
-      /*  await Firestore.instance
+          .document("Tangerina Poncan")
+          .setData({"nome": "Tangerina Poncan", "id": Uuid().v1()});*/
+/*      await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Erva Doce")
-          .setData({"nome": "Erva Doce", "id": Uuid().v1()});*/
-      await Firestore.instance
+          .document("Uva Itália")
+          .setData({"nome": "Uva Itália", "id": Uuid().v1()});*/
+  /*    await Firestore.instance
           .collection("Tipo")
-          .document("Verduras")
+          .document("Frutas")
           .collection("Mes")
           .document("Dezembro")
           .collection("Alimentos")
-          .document("Escarola")
-          .setData({"nome": "Escarola", "id": Uuid().v1()});
-      await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Espinafre")
-          .setData({"nome": "Espinafre", "id": Uuid().v1()});
-      /* await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Gobô")
-          .setData({"nome": "Gobô", "id": Uuid().v1()});*/
-      /*  await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Louro")
-          .setData({"nome": "Louro", "id": Uuid().v1()});*/
-      await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Mostarda")
-          .setData({"nome": "Mostarda", "id": Uuid().v1()});
-      /* await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Moyashi")
-          .setData({"nome": "Moyashi", "id": Uuid().v1()});*/
-      await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Nabo")
-          .setData({"nome": "Nabo", "id": Uuid().v1()});
-      /*  await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Rabanete")
-          .setData({"nome": "Rabanete", "id": Uuid().v1()});*/
-      await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Repolho")
-          .setData({"nome": "Repolho", "id": Uuid().v1()});
-      await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Rúcula")
-          .setData({"nome": "Rúcula", "id": Uuid().v1()});
-      await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Salsa")
-          .setData({"nome": "Salsa", "id": Uuid().v1()});
-      await Firestore.instance
-          .collection("Tipo")
-          .document("Verduras")
-          .collection("Mes")
-          .document("Dezembro")
-          .collection("Alimentos")
-          .document("Salsão")
-          .setData({"nome": "Salsão", "id": Uuid().v1()});
+          .document("Uva Niágara")
+          .setData({"nome": "Uva Niágara", "id": Uuid().v1()});*/
 
       print("response");
     } catch (e) {
@@ -243,8 +291,9 @@ class SafraService implements ISafraService {
               nome: value.documents[i].data["nome"],
               id: value.documents[i].data["id"]));
         }
-        return listaAlimentos;
+
       });
+      return listaAlimentos;
     } catch (e) {
       return null;
     }

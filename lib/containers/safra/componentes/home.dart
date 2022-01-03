@@ -6,6 +6,10 @@ import 'package:safra_facil/api/i-safra-service.dart';
 import 'package:safra_facil/api/safra-service.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-cubit.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-model.dart';
+import 'package:safra_facil/containers/safra/models/alimento.dart';
+
+import 'buy-list.dart';
+import 'detail.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,7 +18,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   SafraCubit _bloc = new SafraCubit();
-  ISafraService _safraService;
 
   List<String> listMonth = [
     "JAN",
@@ -31,10 +34,28 @@ class _HomeState extends State<Home> {
     "DEZ"
   ];
 
+  Map<String, String> listMonthName = {
+    "JAN": "Janeiro",
+    "FEV": "Fevereiro",
+    "MAR": "Março",
+    "ABR": "Abril",
+    "MAI": "Maio",
+    "JUN": "Junho",
+    "JUL": "Julho",
+    "AGO": "Agosto",
+    "SET": "Setembro",
+    "OUT": "Outubro",
+    "NOV": "Novembro",
+    "DEZ": "Dezembro",
+  };
+  String mes = "Janeiro";
+  String alimento = "Frutas";
+
   @override
   void initState() {
-    _safraService = new SafraService();
-    _safraService.listarAlimentosTipoEMes("Verduras", "Janeiro");
+    _bloc = new SafraCubit();
+    _bloc.buscarAlimentos(alimento, mes).then((value) => setState(() {}));
+
     super.initState();
   }
 
@@ -42,7 +63,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return new BlocProvider(
       create: (context) {
-        _bloc = new SafraCubit();
         return _bloc;
       },
       child: Scaffold(
@@ -92,73 +112,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 showBarModalBottomSheet(
                   context: context,
-                  builder: (context) => Material(
-                      child: Navigator(
-                    onGenerateRoute: (_) => MaterialPageRoute(
-                      builder: (context2) => Builder(
-                        builder: (context) => CupertinoPageScaffold(
-                          navigationBar: CupertinoNavigationBar(
-                              leading: Container(),
-                              middle: Text("Lista de compras")),
-                          child: SafeArea(
-                              bottom: false,
-                              child: new Column(
-                                children: [
-                                  new Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      new GestureDetector(
-                                        onTap: () {},
-                                        child: new Container(
-                                          padding: EdgeInsets.all(4.0),
-                                          margin: EdgeInsets.only(
-                                              right: 16, bottom: 16),
-                                          child: Material(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            elevation: 4,
-                                            child: new Container(
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0XFFE7AF20),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8)),
-                                              padding: EdgeInsets.only(
-                                                  top: 8,
-                                                  bottom: 8,
-                                                  left: 16,
-                                                  right: 16),
-                                              child: new Text(
-                                                "Limpar lista",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  new Expanded(
-                                    child: ListView(
-                                      shrinkWrap: true,
-                                      controller:
-                                          ModalScrollController.of(context),
-                                      children: ListTile.divideTiles(
-                                        context: context,
-                                        tiles: List.generate(
-                                            10,
-                                            (index) => _buildFoodCard(
-                                                context, "Item teste $index")),
-                                      ).toList(),
-                                    ),
-                                  )
-                                ],
-                              )),
-                        ),
-                      ),
-                    ),
-                  )),
+                  builder: (context) => BuyList(bloc: _bloc,),
                 );
               },
             ),
@@ -186,8 +140,11 @@ class _HomeState extends State<Home> {
   Widget _buildCardFilter(BuildContext context, String text, int item) {
     if (_bloc.state.selectedItem == item)
       return new GestureDetector(
-          onTap: () {
+          onTap: () async {
+            alimento = text;
             _bloc.changeSelectedItem(item);
+            await _bloc.buscarAlimentos(alimento, mes);
+            setState(() {});
           },
           child: new Material(
             borderRadius: BorderRadius.circular(20),
@@ -201,8 +158,11 @@ class _HomeState extends State<Home> {
           ));
     else
       return new GestureDetector(
-        onTap: () {
+        onTap: () async {
+          alimento = text;
           _bloc.changeSelectedItem(item);
+          await _bloc.buscarAlimentos(alimento, mes);
+          setState(() {});
         },
         child: new Container(
           padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
@@ -237,7 +197,7 @@ class _HomeState extends State<Home> {
           new Container(
             margin: EdgeInsets.only(top: 32),
             child: new Text(
-              "SETEMBRO",
+              mes,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
@@ -246,7 +206,7 @@ class _HomeState extends State<Home> {
             alignment: Alignment.center,
             width: double.infinity,
             child: new ListView.builder(
-                padding: EdgeInsets.only(top: 16),
+                padding: EdgeInsets.only(top: 16, left: 16, right: 16),
                 scrollDirection: Axis.horizontal,
                 itemCount: 12,
                 itemBuilder: (context, index) {
@@ -258,45 +218,32 @@ class _HomeState extends State<Home> {
             child: new SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: new Wrap(
-                direction: Axis.horizontal,
-                children: [
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                  _buildFoodCard(context, "Abacaxi"),
-                ],
-              ),
+                  direction: Axis.horizontal, children: foodList(context)),
             ),
           )
-          /*    Container(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height / 1.8,
-            child: new ListView.builder(
-                padding: EdgeInsets.only(top: 16),
-                shrinkWrap: true,
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return _buildFoodCard(context, "Abacaxi");
-                }),
-          )*/
         ],
       ),
     );
   }
 
+  List<Widget> foodList(BuildContext context) {
+    List<Widget> lista = [];
+    _bloc.alimentosAtuais.forEach((element) {
+      lista.add(
+        _buildFoodCard(context, element.nome),
+      );
+    });
+    return lista;
+  }
+
   Widget _buildMonthCard(int index) {
     if (_bloc.state.selectedMonth == index)
       return new GestureDetector(
-        onTap: () {
+        onTap: () async {
+          mes = listMonthName[listMonth[index]];
           _bloc.changeSelectedMonth(index);
+          await _bloc.buscarAlimentos(alimento, mes);
+          setState(() {});
         },
         child: new Container(
           alignment: Alignment.center,
@@ -313,8 +260,11 @@ class _HomeState extends State<Home> {
       );
     else
       return new GestureDetector(
-        onTap: () {
+        onTap: () async {
+          mes = listMonthName[listMonth[index]];
           _bloc.changeSelectedMonth(index);
+          await _bloc.buscarAlimentos(alimento, mes);
+          setState(() {});
         },
         child: new Container(
           alignment: Alignment.center,
@@ -334,93 +284,10 @@ class _HomeState extends State<Home> {
       onPressed: () {
         showBarModalBottomSheet(
           context: context,
-          builder: (context) => Material(
-              child: Navigator(
-            onGenerateRoute: (_) => MaterialPageRoute(
-              builder: (context2) => Builder(
-                builder: (context) => CupertinoPageScaffold(
-                  navigationBar: CupertinoNavigationBar(
-                      leading: Container(), middle: Text("Descrição")),
-                  child: SafeArea(
-                    bottom: false,
-                    child: new SingleChildScrollView(
-                      child: new Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          new Container(
-                            margin: EdgeInsets.only(top: 16),
-                            child: new Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                new Container(
-                                  width: 150,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(8)),
-                                ),
-                              ],
-                            ),
-                          ),
-                          new Container(
-                            margin: EdgeInsets.all(16),
-                            child: new Text(
-                              "ALIMENTO",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          new Container(
-                            margin: EdgeInsets.all(16),
-                            child: new Text(
-                              "Descrição dos nutrientes do alimento (levando em conta uma porção, como por exemplo 100g)",
-                            ),
-                          ),
-                          new Container(
-                            margin: EdgeInsets.all(16),
-                            child: new Text(
-                              "Outros meses em que é encontrado",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          new Container(
-                            margin: EdgeInsets.all(16),
-                            child: new Text(
-                              "Outubro, Novembro, Dezembro e Janeiro",
-                            ),
-                          ),
-                          new Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              new Container(
-                                margin: EdgeInsets.only(right: 16, top: 32),
-                                child: new Material(
-                                  borderRadius: BorderRadius.circular(8),
-                                  elevation: 4,
-                                  child: new Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: const Color(0XFFA003EA)),
-                                    padding: EdgeInsets.only(
-                                        top: 8, bottom: 8, left: 16, right: 16),
-                                    child: new Text(
-                                      "Adicionar à lista de compras",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )),
+          builder: (context) => Detail(
+            bloc: _bloc,
+            text: text,
+          ),
         );
       },
       child: Container(
@@ -438,11 +305,17 @@ class _HomeState extends State<Home> {
                 new Row(
                   children: [
                     new Container(
+                      alignment: Alignment.center,
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(8)),
+                      child: new Text(
+                        "Sem\nimagem",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 8, color: Colors.black),
+                      ),
                     ),
                     new Container(
                       padding: EdgeInsets.only(left: 16),

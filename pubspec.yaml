@@ -29,12 +29,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_bloc: ^7.0.1
-  z_components: ^0.9.40+11
   modal_bottom_sheet: ^2.0.0
   responsive_framework: ^0.1.5
   firebase_storage: ^3.1.1
   cloud_firestore: ^0.11.0+2
   uuid: 2.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
