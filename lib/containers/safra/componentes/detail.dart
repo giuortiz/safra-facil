@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-cubit.dart';
 import 'package:safra_facil/containers/safra/models/alimento.dart';
 
+import 'add-item.dart';
+
 class Detail extends StatefulWidget {
   SafraCubit bloc;
   String text;
@@ -54,7 +56,7 @@ class _DetailState extends State<Detail> {
                     new Container(
                       margin: EdgeInsets.all(16),
                       child: new Text(
-                        "ALIMENTO",
+                        widget.text,
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -103,10 +105,14 @@ class _DetailState extends State<Detail> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           GestureDetector(
-            onTap: () {
-              widget.bloc.alimentosSelecionados
-                  .add(new Alimento(nome: text, qtde: 1));
-              setState(() {});
+            onTap: () async {
+              await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AddItem(
+                      nome: widget.text,
+                    );
+                  });
             },
             child: new Container(
               margin: EdgeInsets.only(right: 16, top: 32),
@@ -131,35 +137,19 @@ class _DetailState extends State<Detail> {
       );
     } else {
       return new Container(
-        padding: EdgeInsets.only(left: 16, right: 16),
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            new IconButton(
-                onPressed: () {
-                  widget.bloc.alimentosSelecionados.last.qtde =
-                      widget.bloc.alimentosSelecionados.last.qtde - 1;
-                  if (widget.bloc.alimentosSelecionados.last.qtde == 0) {
-                    widget.bloc.alimentosSelecionados.removeLast();
-                  }
-                  setState(() {});
-                },
-                icon: Icon(
-                  Icons.remove,
-                  color: const Color(0xffA003EA),
-                )),
-            new Text(widget.bloc.alimentosSelecionados.last.qtde.toString()),
-            new IconButton(
-                onPressed: () {
-                  widget.bloc.alimentosSelecionados.last.qtde =
-                      widget.bloc.alimentosSelecionados.last.qtde + 1;
-                  setState(() {});
-                },
-                icon: Icon(
-                  Icons.add,
-                  color: const Color(0xffA003EA),
-                ))
-          ],
+        margin: EdgeInsets.only(right: 16, top: 32),
+        child: new Material(
+          borderRadius: BorderRadius.circular(8),
+          child: new Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: const Color(0XFFA003EA)),
+            padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
+            child: new Text(
+              "Item Adicionado",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ),
       );
     }

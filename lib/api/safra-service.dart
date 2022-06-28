@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:safra_facil/containers/safra/models/alimento.dart';
 import 'package:uuid/uuid.dart';
 
@@ -26,7 +28,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Abacaxi Haway")
           .setData({"nome": "Abacaxi Haway", "id": Uuid().v1()});*/
-    /*  await Firestore.instance
+      /*  await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -50,7 +52,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Banana Nanica")
           .setData({"nome": "Banana Nanica", "id": Uuid().v1()});*/
-  /*    await Firestore.instance
+      /*    await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -58,7 +60,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Banana Maça")
           .setData({"nome": "Banana Maça", "id": Uuid().v1()});*/
- /*     await Firestore.instance
+      /*     await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -74,7 +76,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Cajú")
           .setData({"nome": "Cajú", "id": Uuid().v1()});*/
-  /*    await Firestore.instance
+      /*    await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -90,7 +92,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Coco Seco")
           .setData({"nome": "Coco Seco", "id": Uuid().v1()});*/
-    /*  await Firestore.instance
+      /*  await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -98,7 +100,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Figo")
           .setData({"nome": "Figo", "id": Uuid().v1()});*/
-   /*   await Firestore.instance
+      /*   await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -122,7 +124,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Jabuticaba")
           .setData({"nome": "Jabuticaba", "id": Uuid().v1()});*/
- /*     await Firestore.instance
+      /*     await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -146,7 +148,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Mamão")
           .setData({"nome": "Mamão", "id": Uuid().v1()});
-  /*    await Firestore.instance
+      /*    await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -162,7 +164,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Manga")
           .setData({"nome": "Manga", "id": Uuid().v1()});
-  /*    await Firestore.instance
+      /*    await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -170,7 +172,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Maracuja Azedo")
           .setData({"nome": "Maracuja Azedo", "id": Uuid().v1()});*/
- /*     await Firestore.instance
+      /*     await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -186,7 +188,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Melancia")
           .setData({"nome": "Melancia", "id": Uuid().v1()});
-     /* await Firestore.instance
+      /* await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -234,7 +236,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Tangerina Cravo")
           .setData({"nome": "Tangerina Cravo", "id": Uuid().v1()});*/
- /*     await Firestore.instance
+      /*     await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -258,7 +260,7 @@ class SafraService implements ISafraService {
           .collection("Alimentos")
           .document("Uva Itália")
           .setData({"nome": "Uva Itália", "id": Uuid().v1()});*/
-  /*    await Firestore.instance
+      /*    await Firestore.instance
           .collection("Tipo")
           .document("Frutas")
           .collection("Mes")
@@ -273,7 +275,7 @@ class SafraService implements ISafraService {
     }
   }
 
-  @override
+
   Future<List<Alimento>> listarAlimentosTipoEMes(
       String tipo, String mes) async {
     List<Alimento> listaAlimentos = [];
@@ -291,11 +293,82 @@ class SafraService implements ISafraService {
               nome: value.documents[i].data["nome"],
               id: value.documents[i].data["id"]));
         }
-
       });
       return listaAlimentos;
     } catch (e) {
       return null;
+    }
+  }
+
+
+  Future<bool> salvarAlimentosLista(String nome, String dataColheita,
+      String freqIrrigacao, Uint8List file) async {
+    try {
+      String id = Uuid().v1();
+      salvarFoto(file, id);
+      var response = await Firestore.instance
+          .collection("Acompanhamento")
+          .document("4vqMiGekCZqrJ3SNKqqV")
+          .collection("Alimentos")
+          .document(nome)
+          .setData({
+        "nome": nome,
+        "dataInicio": DateTime.now().toIso8601String(),
+        "dataColheita": dataColheita,
+        "freqIrrigacao": freqIrrigacao,
+        "idFoto": id
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> apagarAlimentosLista() async {
+    try {
+      var response = await Firestore.instance
+          .collection("Acompanhamento")
+          .document("4vqMiGekCZqrJ3SNKqqV")
+          .delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<List<Alimento>> listarAlimentosSelecionados() async {
+    List<Alimento> listaAlimentos = [];
+    try {
+      var response = await Firestore.instance
+          .collection("Acompanhamento")
+          .document("4vqMiGekCZqrJ3SNKqqV")
+          .collection("Alimentos")
+          .getDocuments()
+          .then((value) {
+        for (int i = 0; i < value.documents.length; i++) {
+          listaAlimentos.add(new Alimento(
+              nome: value.documents[i].data["nome"],
+              id: value.documents[i].data["id"],
+              dataColheita: value.documents[i].data["dataColheita"],
+              dataInicio: value.documents[i].data["dataInicio"],
+              freqIrrigacao: value.documents[i].data["freqIrrigacao"],
+              idFoto: value.documents[i].data["idFoto"]));
+        }
+      });
+      return listaAlimentos;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  bool salvarFoto(Uint8List file, String id) {
+    try {
+      final StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(id);
+      final StorageUploadTask task = firebaseStorageRef.putData(file);
+      return true;
+    } catch (e) {
+      print(e);
     }
   }
 }

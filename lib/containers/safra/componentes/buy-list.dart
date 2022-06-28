@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:safra_facil/api/i-safra-service.dart';
+import 'package:safra_facil/api/safra-service.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-cubit.dart';
+import 'package:safra_facil/containers/safra/models/alimento.dart';
+
+import 'item-list.dart';
 
 class BuyList extends StatefulWidget {
   SafraCubit bloc;
@@ -14,9 +19,12 @@ class BuyList extends StatefulWidget {
 
 class _BuyListState extends State<BuyList> {
   SnackBar snackBar;
+  ISafraService _safraService;
 
   @override
   void initState() {
+    _safraService = new SafraService();
+    buscarLista();
     snackBar = SnackBar(
       content: const Text('Lista excluída com sucesso'),
       action: SnackBarAction(
@@ -31,6 +39,12 @@ class _BuyListState extends State<BuyList> {
     super.initState();
   }
 
+  Future<void> buscarLista() async {
+    widget.bloc.alimentosSelecionados =
+        await _safraService.listarAlimentosSelecionados();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +54,7 @@ class _BuyListState extends State<BuyList> {
           builder: (context2) => Builder(
             builder: (context) => CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
-                  leading: Container(), middle: Text("Lista de compras")),
+                  leading: Container(), middle: Text("Lista de alimentos")),
               child: SafeArea(
                   bottom: false,
                   child: new Column(
@@ -115,16 +129,29 @@ class _BuyListState extends State<BuyList> {
             context: context,
             tiles: List.generate(
                 widget.bloc.alimentosSelecionados.length,
-                (index) => _buildFoodCard(context,
-                    widget.bloc.alimentosSelecionados[index].nome, index)),
+                (index) => _buildFoodCard(
+                    context,
+                    widget.bloc.alimentosSelecionados[index].nome,
+                    index,
+                    widget.bloc.alimentosSelecionados[index])),
           ).toList(),
         ),
       );
   }
 
-  Widget _buildFoodCard(BuildContext context, String text, int index) {
+  Widget _buildFoodCard(
+      BuildContext context, String text, int index, Alimento alimento) {
     return new FlatButton(
-      onPressed: () {},
+      onPressed: () {
+        showBarModalBottomSheet(
+          context: context,
+          builder: (context) => ItemList(
+            bloc: widget.bloc,
+            alimento: alimento,
+            text: text,
+          ),
+        );
+      },
       child: Container(
         width: 420,
         margin: EdgeInsets.only(bottom: 8),
@@ -155,7 +182,7 @@ class _BuyListState extends State<BuyList> {
                     new Container(
                       padding: EdgeInsets.only(left: 16),
                       child: new Text(
-                        "$text (${widget.bloc.alimentosSelecionados[index].qtde})",
+                        "$text",
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 16),
                       ),

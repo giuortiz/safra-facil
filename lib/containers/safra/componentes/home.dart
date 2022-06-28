@@ -228,6 +228,7 @@ class _HomeState extends State<Home> {
 
   List<Widget> foodList(BuildContext context) {
     List<Widget> lista = [];
+    print(_bloc.alimentosAtuais.length);
     _bloc.alimentosAtuais.forEach((element) {
       lista.add(
         _buildFoodCard(context, element.nome),
