@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:safra_facil/api/i-safra-service.dart';
+import 'package:safra_facil/api/safra-service.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-cubit.dart';
 import 'package:safra_facil/containers/safra/models/alimento.dart';
 
@@ -15,6 +19,16 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  ISafraService _safraService;
+  String file;
+
+  @override
+  void initState() {
+    _safraService = new SafraService();
+    _buscarImagem();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -35,18 +49,19 @@ class _ItemListState extends State<ItemList> {
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          new Container(
-                            width: 150,
-                            alignment: Alignment.center,
-                            height: 150,
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(8)),
-                            child: new Text(
-                              "Sem\nimagem",
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.black),
+                          CircleAvatar(
+                            radius: 55,
+                            backgroundColor: Color(0XFFA003EA),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  (file != null) ? NetworkImage(file) : null,
+                              child: new Text(
+                                (file != null) ? "" : "Sem\nimagem",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.black),
+                              ),
                             ),
                           ),
                         ],
@@ -56,8 +71,8 @@ class _ItemListState extends State<ItemList> {
                         margin: EdgeInsets.all(16),
                         child: TextField(
                           enabled: true,
-                          controller: new TextEditingController(
-                              text: widget.alimento.dataInicio),
+                          controller:
+                              new TextEditingController(text: _dataFormatada()),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'data inicio',
@@ -102,6 +117,12 @@ class _ItemListState extends State<ItemList> {
         ),
       ),
     ));
+  }
+
+  String _dataFormatada() {
+    DateTime data = DateTime.parse(widget.alimento.dataInicio);
+
+    return "${data.day}/${data.month}/${data.year}";
   }
 
   Widget addButtom(String text) {
@@ -176,6 +197,16 @@ class _ItemListState extends State<ItemList> {
           ],
         ),
       );
+    }
+  }
+
+  Future<void> _buscarImagem() async {
+    String image = await _safraService.buscarFoto(widget.alimento.idFoto);
+    if (image != null) {
+      file = image;
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:safra_facil/api/i-safra-service.dart';
 import 'package:safra_facil/api/safra-service.dart';
 
@@ -124,8 +125,9 @@ class _AddItemState extends State<AddItem> {
     );
 
     if (buscarfoto != null) {
-      setState(() async {
-        file = await buscarfoto.readAsBytes();
+      file = await buscarfoto.readAsBytes();
+      setState(()  {
+
       });
     }
   }
@@ -136,8 +138,9 @@ class _AddItemState extends State<AddItem> {
     );
 
     if (buscarfoto != null) {
-      setState(() async {
-        file = await buscarfoto.readAsBytes();
+      file = await buscarfoto.readAsBytes();
+      setState(()  {
+
       });
     }
   }
@@ -177,8 +180,9 @@ class _AddItemState extends State<AddItem> {
                       new Expanded(
                           flex: 5,
                           child: new GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               Navigator.pop(context);
+                              await Permission.camera.request();
                               openCamera();
                             },
                             child: new Container(
@@ -208,8 +212,9 @@ class _AddItemState extends State<AddItem> {
                       new Expanded(
                           flex: 5,
                           child: new GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 Navigator.pop(context);
+                                await Permission.storage.request();
                                 openGallery();
                               },
                               child: new Container(

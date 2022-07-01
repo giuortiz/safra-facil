@@ -361,6 +361,17 @@ class SafraService implements ISafraService {
     }
   }
 
+  Future<dynamic> buscarFoto(String idFoto) {
+    try {
+      final StorageReference firebaseStorageRef =
+      FirebaseStorage.instance.ref().child(idFoto);
+      var res = firebaseStorageRef.getDownloadURL();
+      return res;
+    } catch (e) {
+      return null;
+    }
+  }
+
   bool salvarFoto(Uint8List file, String id) {
     try {
       final StorageReference firebaseStorageRef =
