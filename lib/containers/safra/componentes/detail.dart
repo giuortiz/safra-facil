@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-cubit.dart';
-import 'package:safra_facil/containers/safra/models/alimento.dart';
 
-import 'add-item.dart';
 
 class Detail extends StatefulWidget {
   SafraCubit bloc;
   String text;
 
-  Detail({this.bloc, this.text});
+  Detail({required this.bloc, required this.text});
 
   @override
   _DetailState createState() => _DetailState();
@@ -81,7 +79,6 @@ class _DetailState extends State<Detail> {
                         "Em andamento",
                       ),
                     ),
-                    addButtom(widget.text)
                   ],
                 ),
               ),
@@ -90,68 +87,5 @@ class _DetailState extends State<Detail> {
         ),
       ),
     ));
-  }
-
-  Widget addButtom(String text) {
-    bool existeNaLista = false;
-    for (int i = 0; i < widget.bloc.alimentosSelecionados.length; i++) {
-      if (widget.bloc.alimentosSelecionados[i].nome == text) {
-        existeNaLista = true;
-      }
-    }
-
-    if (widget.bloc.alimentosSelecionados.length == 0 || !existeNaLista) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          GestureDetector(
-            onTap: () async {
-              await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AddItem(
-                      nome: widget.text,
-                    );
-                  });
-            },
-            child: new Container(
-              margin: EdgeInsets.only(right: 16, top: 32),
-              child: new Material(
-                borderRadius: BorderRadius.circular(8),
-                elevation: 4,
-                child: new Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: const Color(0XFFA003EA)),
-                  padding:
-                      EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
-                  child: new Text(
-                    "Adicionar à lista de compras",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    } else {
-      return new Container(
-        margin: EdgeInsets.only(right: 16, top: 32),
-        child: new Material(
-          borderRadius: BorderRadius.circular(8),
-          child: new Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: const Color(0XFFA003EA)),
-            padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
-            child: new Text(
-              "Item Adicionado",
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-      );
-    }
   }
 }

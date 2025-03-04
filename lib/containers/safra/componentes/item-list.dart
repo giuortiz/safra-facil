@@ -12,20 +12,17 @@ class ItemList extends StatefulWidget {
   Alimento alimento;
   String text;
 
-  ItemList({this.bloc, this.text, this.alimento});
+  ItemList({required this.bloc, required this.text, required this.alimento});
 
   @override
   _ItemListState createState() => _ItemListState();
 }
 
 class _ItemListState extends State<ItemList> {
-  ISafraService _safraService;
-  String file;
+ late String file;
 
   @override
   void initState() {
-    _safraService = new SafraService();
-    _buscarImagem();
     super.initState();
   }
 
@@ -120,7 +117,7 @@ class _ItemListState extends State<ItemList> {
   }
 
   String _dataFormatada() {
-    DateTime data = DateTime.parse(widget.alimento.dataInicio);
+    DateTime data = DateTime.parse(widget.alimento.dataInicio!);
 
     return "${data.day}/${data.month}/${data.year}";
   }
@@ -173,7 +170,7 @@ class _ItemListState extends State<ItemList> {
             new IconButton(
                 onPressed: () {
                   widget.bloc.alimentosSelecionados.last.qtde =
-                      widget.bloc.alimentosSelecionados.last.qtde - 1;
+                      widget.bloc.alimentosSelecionados.last.qtde! - 1;
                   if (widget.bloc.alimentosSelecionados.last.qtde == 0) {
                     widget.bloc.alimentosSelecionados.removeLast();
                   }
@@ -187,7 +184,7 @@ class _ItemListState extends State<ItemList> {
             new IconButton(
                 onPressed: () {
                   widget.bloc.alimentosSelecionados.last.qtde =
-                      widget.bloc.alimentosSelecionados.last.qtde + 1;
+                      widget.bloc.alimentosSelecionados.last.qtde! + 1;
                   setState(() {});
                 },
                 icon: Icon(
@@ -197,16 +194,6 @@ class _ItemListState extends State<ItemList> {
           ],
         ),
       );
-    }
-  }
-
-  Future<void> _buscarImagem() async {
-    String image = await _safraService.buscarFoto(widget.alimento.idFoto);
-    if (image != null) {
-      file = image;
-      if (mounted) {
-        setState(() {});
-      }
     }
   }
 }

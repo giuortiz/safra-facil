@@ -2,13 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:safra_facil/api/i-safra-service.dart';
-import 'package:safra_facil/api/safra-service.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-cubit.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-model.dart';
-import 'package:safra_facil/containers/safra/models/alimento.dart';
-
-import 'buy-list.dart';
 import 'detail.dart';
 
 class Home extends StatefulWidget {
@@ -89,32 +84,14 @@ class _HomeState extends State<Home> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            new IconButton(
-              icon: new Icon(
-                Icons.list,
-                color: Colors.transparent,
-              ),
-            ),
             new Text(
-              "INÍCIO",
+              "SAFRA FACIL",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold),
-            ),
-            new IconButton(
-              icon: new Icon(
-                Icons.list,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                showBarModalBottomSheet(
-                  context: context,
-                  builder: (context) => BuyList(bloc: _bloc,),
-                );
-              },
             ),
           ],
         ),
@@ -182,7 +159,7 @@ class _HomeState extends State<Home> {
           color: const Color(0xFFEDEDED),
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(30), topLeft: Radius.circular(30))),
-      child: new ListView(
+      child: ListView(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         children: [_buildMonthList(context)],
@@ -231,7 +208,7 @@ class _HomeState extends State<Home> {
     print(_bloc.alimentosAtuais.length);
     _bloc.alimentosAtuais.forEach((element) {
       lista.add(
-        _buildFoodCard(context, element.nome),
+        _buildFoodCard(context, element.nome??""),
       );
     });
     return lista;
@@ -241,7 +218,7 @@ class _HomeState extends State<Home> {
     if (_bloc.state.selectedMonth == index)
       return new GestureDetector(
         onTap: () async {
-          mes = listMonthName[listMonth[index]];
+          mes = listMonthName[listMonth[index]]??"";
           _bloc.changeSelectedMonth(index);
           await _bloc.buscarAlimentos(alimento, mes);
           setState(() {});
@@ -262,7 +239,7 @@ class _HomeState extends State<Home> {
     else
       return new GestureDetector(
         onTap: () async {
-          mes = listMonthName[listMonth[index]];
+          mes = listMonthName[listMonth[index]]??"";
           _bloc.changeSelectedMonth(index);
           await _bloc.buscarAlimentos(alimento, mes);
           setState(() {});
@@ -281,7 +258,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildFoodCard(BuildContext context, String text) {
-    return new FlatButton(
+    return TextButton(
       onPressed: () {
         showBarModalBottomSheet(
           context: context,
@@ -293,50 +270,59 @@ class _HomeState extends State<Home> {
       },
       child: Container(
         width: 420,
-        margin: EdgeInsets.only(bottom: 8),
-        child: new Material(
+        margin: const EdgeInsets.only(bottom: 8),
+        child: Material(
           borderRadius: BorderRadius.circular(8),
           elevation: 4,
-          child: new Container(
-            padding: EdgeInsets.only(top: 8, right: 16, left: 16, bottom: 8),
-            child: new Row(
+          child: Container(
+            padding: const EdgeInsets.only(
+              top: 8,
+              right: 16,
+              left: 16,
+              bottom: 8,
+            ),
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                new Row(
+                Row(
                   children: [
-                    new Container(
+                    Container(
                       alignment: Alignment.center,
                       height: 60,
                       width: 60,
                       decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8)),
-                      child: new Text(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
                         "Sem\nimagem",
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 8, color: Colors.black),
                       ),
                     ),
-                    new Container(
-                      padding: EdgeInsets.only(left: 16),
-                      child: new Text(
+                    Container(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: Text(
                         text,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 16),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                new Icon(
+                const Icon(
                   Icons.chevron_right,
                   color: Colors.black,
-                )
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+
   }
 }

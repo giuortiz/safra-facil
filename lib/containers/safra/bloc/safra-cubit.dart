@@ -9,7 +9,7 @@ class SafraCubit extends Cubit<SafraModel> implements SafraCubitActions {
   SafraCubit()
       : super(new SafraModel(
             selectedItem: 0, selectedMonth: 0));
-  ISafraService _safraService;
+ late ISafraService _safraService;
   List<Alimento> alimentosAtuais = [];
   List<Alimento> alimentosSelecionados = [];
   List<Alimento> backupAlimentosSelecionados = [];

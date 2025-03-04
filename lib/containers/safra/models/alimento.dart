@@ -1,11 +1,11 @@
 class Alimento {
-  String nome;
-  String id;
-  String dataInicio;
-  String dataColheita;
-  String freqIrrigacao;
-  String idFoto;
-  int qtde;
+  String? nome;
+  String? id;
+  String? dataInicio;
+  String? dataColheita;
+  String? freqIrrigacao;
+  String? idFoto;
+  int? qtde;
 
   Alimento(
       {this.nome,
