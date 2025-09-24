@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-cubit.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-model.dart';
+import 'package:safra_facil/containers/safra/componentes/responsive.dart';
 import 'detail.dart';
 
 class Home extends StatefulWidget {
@@ -44,12 +44,11 @@ class _HomeState extends State<Home> {
     "DEZ": "Dezembro",
   };
   String mes = "Janeiro";
-  String alimento = "Frutas";
 
   @override
   void initState() {
     _bloc = new SafraCubit();
-    _bloc.buscarAlimentos(alimento, mes).then((value) => setState(() {}));
+    _bloc.buscarAlimentos(mes).then((value) => setState(() {}));
 
     super.initState();
   }
@@ -61,7 +60,6 @@ class _HomeState extends State<Home> {
         return _bloc;
       },
       child: Scaffold(
-        backgroundColor: const Color(0xffA003EA),
         body: _buildBody(context),
       ),
     );
@@ -86,79 +84,40 @@ class _HomeState extends State<Home> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            new Text(
-              "SAFRA FACIL",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: new Text(
+                "Calendário da Safra",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
-        _buildFilterList(context)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Descubra quais frutas, verduras e legumes estão em sua melhor época durante o ano",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
 
-  Widget _buildFilterList(BuildContext context) {
-    return new Container(
-      margin: EdgeInsets.only(top: 16),
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildCardFilter(context, "Frutas", 0),
-          _buildCardFilter(context, "Verduras", 1),
-          _buildCardFilter(context, "Legumes", 2)
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCardFilter(BuildContext context, String text, int item) {
-    if (_bloc.state.selectedItem == item)
-      return new GestureDetector(
-          onTap: () async {
-            alimento = text;
-            _bloc.changeSelectedItem(item);
-            await _bloc.buscarAlimentos(alimento, mes);
-            setState(() {});
-          },
-          child: new Material(
-            borderRadius: BorderRadius.circular(20),
-            elevation: 4,
-            child: new Container(
-              padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(30)),
-              child: new Text(text, style: TextStyle(color: Colors.black)),
-            ),
-          ));
-    else
-      return new GestureDetector(
-        onTap: () async {
-          alimento = text;
-          _bloc.changeSelectedItem(item);
-          await _bloc.buscarAlimentos(alimento, mes);
-          setState(() {});
-        },
-        child: new Container(
-          padding: EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
-          color: Colors.transparent,
-          child: new Text(
-            text,
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      );
-  }
-
   Widget _buildList(BuildContext context) {
     return new Container(
-      height: MediaQuery.of(context).size.height * (3 / 4),
-      decoration: BoxDecoration(
-          color: const Color(0xFFEDEDED),
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30), topLeft: Radius.circular(30))),
       child: ListView(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -171,24 +130,37 @@ class _HomeState extends State<Home> {
     return SingleChildScrollView(
       child: new Column(
         children: [
-          new Container(
-            margin: EdgeInsets.only(top: 32),
-            child: new Text(
-              mes,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
           Container(
-            height: MediaQuery.of(context).size.height / 16,
+            margin: (Responsive.isMobile(context))
+                ? EdgeInsets.only(left: 16, right: 16)
+                : EdgeInsets.only(left: 64, right: 64),
             alignment: Alignment.center,
             width: double.infinity,
-            child: new ListView.builder(
-                padding: EdgeInsets.only(top: 16, left: 16, right: 16),
-                scrollDirection: Axis.horizontal,
-                itemCount: 12,
-                itemBuilder: (context, index) {
-                  return _buildMonthCard(index);
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                spacing: 4,
+                runSpacing: 4,
+                children: List.generate(12, (index) {
+                  return SizedBox(
+                    width: 70,
+                    child: _buildMonthCard(index),
+                  );
                 }),
+              ),
+            ),
+          ),
+          new Container(
+            margin: EdgeInsets.only(top: 16),
+            child: new Text(
+              '$mes - Alimentos Da Safra',
+              style: TextStyle(fontSize: 16),
+            ),
           ),
           new Container(
             height: MediaQuery.of(context).size.height / 1.6,
@@ -205,10 +177,10 @@ class _HomeState extends State<Home> {
 
   List<Widget> foodList(BuildContext context) {
     List<Widget> lista = [];
-    print(_bloc.alimentosAtuais.length);
-    _bloc.alimentosAtuais.forEach((element) {
+    print(_bloc.frutasAtuais.length);
+    _bloc.frutasAtuais.forEach((element) {
       lista.add(
-        _buildFoodCard(context, element.nome??""),
+        _buildFoodCard(context, element.nome ?? ""),
       );
     });
     return lista;
@@ -218,18 +190,16 @@ class _HomeState extends State<Home> {
     if (_bloc.state.selectedMonth == index)
       return new GestureDetector(
         onTap: () async {
-          mes = listMonthName[listMonth[index]]??"";
+          mes = listMonthName[listMonth[index]] ?? "";
           _bloc.changeSelectedMonth(index);
-          await _bloc.buscarAlimentos(alimento, mes);
+          await _bloc.buscarAlimentos(mes);
           setState(() {});
         },
         child: new Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.only(right: 8),
-          padding: EdgeInsets.all(4),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: const Color(0xFFC4C4C4)),
+              borderRadius: BorderRadius.circular(8), color: Colors.white),
           child: new Text(
             listMonth[index],
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -239,15 +209,14 @@ class _HomeState extends State<Home> {
     else
       return new GestureDetector(
         onTap: () async {
-          mes = listMonthName[listMonth[index]]??"";
+          mes = listMonthName[listMonth[index]] ?? "";
           _bloc.changeSelectedMonth(index);
-          await _bloc.buscarAlimentos(alimento, mes);
+          await _bloc.buscarAlimentos(mes);
           setState(() {});
         },
         child: new Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.only(right: 8),
-          padding: EdgeInsets.all(4),
+          padding: EdgeInsets.all(12),
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
           child: new Text(
             listMonth[index],
@@ -323,6 +292,5 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
-
   }
 }

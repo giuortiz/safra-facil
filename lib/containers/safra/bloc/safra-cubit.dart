@@ -10,9 +10,10 @@ class SafraCubit extends Cubit<SafraModel> implements SafraCubitActions {
       : super(new SafraModel(
             selectedItem: 0, selectedMonth: 0));
  late ISafraService _safraService;
-  List<Alimento> alimentosAtuais = [];
+  List<Alimento> frutasAtuais = [];
+  List<Alimento> verdurasAtuais = [];
+  List<Alimento> legumesAtuais = [];
   List<Alimento> alimentosSelecionados = [];
-  List<Alimento> backupAlimentosSelecionados = [];
 
   @override
   void changeSelectedItem(int item) {
@@ -24,12 +25,18 @@ class SafraCubit extends Cubit<SafraModel> implements SafraCubitActions {
     emit(state.patchState(selectedMonth: item));
   }
 
-  Future<void> buscarAlimentos(String alimento, String mes) async {
+  Future<void> buscarAlimentos(String mes) async {
     _safraService = new SafraService();
-    List<Alimento> lista =
-        await _safraService.listarAlimentosTipoEMes(alimento, mes);
-    if (lista != null) {
-      alimentosAtuais = lista;
-    }
+    List<Alimento> listaFrutas =
+        await _safraService.listarAlimentosTipoEMes("Frutas", mes);
+    List<Alimento> listaVerduras =
+    await _safraService.listarAlimentosTipoEMes("Verduras", mes);
+    List<Alimento> listaLegumes =
+    await _safraService.listarAlimentosTipoEMes("Legumes", mes);
+
+      frutasAtuais = listaFrutas;
+      verdurasAtuais = listaVerduras;
+      legumesAtuais = listaLegumes;
+
   }
 }
