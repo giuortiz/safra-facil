@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-cubit.dart';
 import 'package:safra_facil/containers/safra/bloc/safra-model.dart';
 import 'package:safra_facil/containers/safra/componentes/responsive.dart';
+import '../models/alimento.dart';
 import 'detail.dart';
 
 class Home extends StatefulWidget {
@@ -15,33 +17,33 @@ class _HomeState extends State<Home> {
   SafraCubit _bloc = new SafraCubit();
 
   List<String> listMonth = [
-    "JAN",
-    "FEV",
-    "MAR",
-    "ABR",
-    "MAI",
-    "JUN",
-    "JUL",
-    "AGO",
-    "SET",
-    "OUT",
-    "NOV",
-    "DEZ"
+    "Jan",
+    "Fev",
+    "Mar",
+    "Abr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Set",
+    "Out",
+    "Nov",
+    "Dez"
   ];
 
   Map<String, String> listMonthName = {
-    "JAN": "Janeiro",
-    "FEV": "Fevereiro",
-    "MAR": "Março",
-    "ABR": "Abril",
-    "MAI": "Maio",
-    "JUN": "Junho",
-    "JUL": "Julho",
-    "AGO": "Agosto",
-    "SET": "Setembro",
-    "OUT": "Outubro",
-    "NOV": "Novembro",
-    "DEZ": "Dezembro",
+    "Jan": "Janeiro",
+    "Fev": "Fevereiro",
+    "Mar": "Março",
+    "Abr": "Abril",
+    "Mai": "Maio",
+    "Jun": "Junho",
+    "Jul": "Julho",
+    "Ago": "Agosto",
+    "Set": "Setembro",
+    "Out": "Outubro",
+    "Nov": "Novembro",
+    "Dez": "Dezembro",
   };
   String mes = "Janeiro";
 
@@ -69,9 +71,11 @@ class _HomeState extends State<Home> {
     return new BlocBuilder<SafraCubit, SafraModel>(builder: (context, state) {
       return new SafeArea(
         bottom: false,
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_buildHeader(context), _buildList(context)],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [_buildHeader(context), _buildList(context)],
+          ),
         ),
       );
     });
@@ -107,7 +111,8 @@ class _HomeState extends State<Home> {
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 14,
-                ),textAlign: TextAlign.center,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ],
@@ -127,49 +132,120 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildMonthList(BuildContext context) {
-    return SingleChildScrollView(
-      child: new Column(
+    return Column(
+      children: [
+        Container(
+          margin: (Responsive.isMobile(context))
+              ? EdgeInsets.only(left: 16, right: 16)
+              : EdgeInsets.only(left: 64, right: 64),
+          alignment: Alignment.center,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(4),
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: 4,
+              runSpacing: 4,
+              children: List.generate(12, (index) {
+                return SizedBox(
+                  width: (Responsive.isMobile(context))?70:100,
+                  child: _buildMonthCard(index),
+                );
+              }),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          child: Text(
+            '$mes - Alimentos Da Safra',
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        SizedBox(
+          height: 16,
+          width: 16,
+        ),
+        Wrap(direction: Axis.horizontal, children: [
+          _buildCategoryCard(
+              'Frutas', _bloc.frutasAtuais, _bloc.frutasAtuais.length),
+          SizedBox(
+            height: 16,
+            width: 16,
+          ),
+          _buildCategoryCard(
+              'Verduras', _bloc.verdurasAtuais, _bloc.verdurasAtuais.length),
+          SizedBox(
+            height: 16,
+            width: 16,
+          ),
+          _buildCategoryCard(
+              'Legumes', _bloc.legumesAtuais, _bloc.legumesAtuais.length),
+        ]),
+        Container()
+      ],
+    );
+  }
+
+  Widget _buildCategoryCard(String title, List<Alimento> items, int count) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[300]!),
+          borderRadius: BorderRadius.circular(12)),
+      width: double.infinity,
+      margin: EdgeInsets.only(bottom: 16, right: 16, left: 16),
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: (Responsive.isMobile(context))
-                ? EdgeInsets.only(left: 16, right: 16)
-                : EdgeInsets.only(left: 64, right: 64),
-            alignment: Alignment.center,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(4),
-              child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                spacing: 4,
-                runSpacing: 4,
-                children: List.generate(12, (index) {
-                  return SizedBox(
-                    width: 70,
-                    child: _buildMonthCard(index),
-                  );
-                }),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                ),
               ),
-            ),
+              Container(
+                padding: EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(12)),
+                child: Text(
+                  '$count',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              )
+            ],
           ),
-          new Container(
-            margin: EdgeInsets.only(top: 16),
-            child: new Text(
-              '$mes - Alimentos Da Safra',
-              style: TextStyle(fontSize: 16),
-            ),
+          SizedBox(height: 12),
+
+          // Lista de itens com Wrap
+          Wrap(
+            spacing: 8, // Espaço horizontal
+            runSpacing: 4, // Espaço vertical
+            children: items.map((item) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey[300]!),
+                ),
+                child: Text(
+                  item.nome ?? '',
+                  style: TextStyle(fontSize: 14),
+                ),
+              );
+            }).toList(),
           ),
-          new Container(
-            height: MediaQuery.of(context).size.height / 1.6,
-            child: new SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: new Wrap(
-                  direction: Axis.horizontal, children: foodList(context)),
-            ),
-          )
         ],
       ),
     );
@@ -197,7 +273,11 @@ class _HomeState extends State<Home> {
         },
         child: new Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.all(12),
+          padding: EdgeInsets.only(
+              top: 12,
+              bottom: 12,
+              left: (Responsive.isMobile(context)) ? 12 : 24,
+              right: (Responsive.isMobile(context)) ? 12 : 24),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8), color: Colors.white),
           child: new Text(
