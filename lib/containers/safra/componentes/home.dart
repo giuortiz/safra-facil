@@ -85,20 +85,23 @@ class _HomeState extends State<Home> {
     return new Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: new Text(
-                "Calendário da Safra",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+        Container(
+          color: Colors.black87,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: new Text(
+                  "Calendário da Safra",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +155,7 @@ class _HomeState extends State<Home> {
               runSpacing: 4,
               children: List.generate(12, (index) {
                 return SizedBox(
-                  width: (Responsive.isMobile(context))?70:100,
+                  width: (Responsive.isMobile(context)) ? 70 : 100,
                   child: _buildMonthCard(index),
                 );
               }),
@@ -186,7 +189,19 @@ class _HomeState extends State<Home> {
           _buildCategoryCard(
               'Legumes', _bloc.legumesAtuais, _bloc.legumesAtuais.length),
         ]),
-        Container()
+        Container(
+          margin: EdgeInsets.symmetric(
+              horizontal: (Responsive.isMobile(context)) ? 16 : 64, vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 16),
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: Text(
+              'Total de alimentos na safra de $mes: ${_bloc.legumesAtuais.length + _bloc.verdurasAtuais.length + _bloc.frutasAtuais.length} itens'),
+        )
       ],
     );
   }
